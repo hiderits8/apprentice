@@ -9,6 +9,12 @@ class NormalTrump extends Cards
     //カードの配列
     private $cards = array();
 
+    //カードの配列を返す
+    public function getCards()
+    {
+        return $this->cards;
+    }
+
     //コンストラクタ
     public function __construct()
     {

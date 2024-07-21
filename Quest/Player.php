@@ -1,14 +1,26 @@
 <?php
 
-declare(strict_types=1);
-
 class Player
 {
     private $name;
 
-    private $hands;
+    private $hands = [];
 
     private $takedCards;
+
+    // public function __construct()
+    // {
+
+    // }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function setHands(array $card)
+    {
+    }
 
     public function getName()
     {
