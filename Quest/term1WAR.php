@@ -1,5 +1,6 @@
 <?php
 
+require_once dirname(__FILE__) . '/TrumpWithJoker.php';
 require_once dirname(__FILE__) . '/NormalTrump.php';
 require_once dirname(__FILE__) . '/Player.php';
 //メインルーチン
@@ -18,23 +19,34 @@ for ($i = 1; $i <= $numberOfPlayers; $i++) {
 }
 
 //山札を作る
-$normalTrump = new NormalTrump();
-$normalTrump->shuffleCards();
+
+//山札選ぶとき
+
+// echo 'ジョーカーを含めますか？（y/n）: ';
+// $joker = trim(fgets(STDIN));
+// if ($joker == 'y') {
+
+$playingCards = new TrumpWithJoker();
+
+// } else {
+//     $playingCards = new NormalTrump();
+// }
+$playingCards->shuffleCards();
+
 
 //場札を作る
 $stock = [];
 $hold = [];
 
 //カードを配る
-$startHands = intdiv(count($normalTrump->cards), count($players));
+$startHands = intdiv(count($playingCards->cards), count($players));
 for ($i = 1; $i <= $startHands; $i++) {
     foreach ($players as $player) {
-        $top = array_shift($normalTrump->cards);
+        $top = array_shift($playingCards->cards);
         $player->setHands($top);
     }
 }
 echo 'カードが配られました。', PHP_EOL;
-
 
 function sortByKey($key_name, $sort_order, $array)
 {
@@ -53,15 +65,45 @@ while (!$flg) {
     foreach ($players as $player) {
         $tmpHand = $player->putHand();
         $tmpHand['name'] = $player->getName();
-        echo $player->getName(), 'のカードは', $tmpHand['suit'], 'の', $tmpHand['number'], 'です。', PHP_EOL;
+        if ($tmpHand['suit'] == 'ジョーカー') {
+            echo $player->getName(), 'のカードは', $tmpHand['suit'], 'です。', PHP_EOL;
+        } else {
+            echo $player->getName(), 'のカードは', $tmpHand['suit'], 'の', $tmpHand['number'], 'です。', PHP_EOL;
+        }
         array_unshift($stock, $tmpHand);
     }
 
     //場札を比較して判定
     $judged_stock = sortByKey('strength', SORT_DESC, $stock);
 
+    //スペードのエースを持っている人がいるか
+    $aceSpade = false;
+    foreach ($judged_stock as $card) {
+        if ($card['suit'] == 'スペード' && $card['number'] == 'A') {
+            $aceSpade = true;
+        }
+    }
 
-    if ($judged_stock[0]['strength'] == $judged_stock[1]['strength']) {
+    if ($aceSpade && $judged_stock[0]['strength'] == 14 && $judged_stock[1]['strength'] == 14) {
+        //世界一の時
+        foreach ($judged_stock as $card) {
+            if ($card['suit'] == 'スペード' && $card['number'] == 'A') {
+                $winnerName = $card['name'];
+                foreach ($players as $player) {
+                    if ($player->getName() == $winnerName) {
+                        $winner = $player;
+                    }
+                }
+            }
+        }
+        echo $winner->getName(), 'の勝利です。', PHP_EOL;
+        $winner->setTakedCards($stock);
+        if (!empty($hold)) {
+            $winner->setTakedCards($hold);
+            $hold = [];
+        }
+        $stock = [];
+    } elseif ($judged_stock[0]['strength'] == $judged_stock[1]['strength']) {
         //引き分けの時
         echo '引き分けです。', PHP_EOL;
         foreach ($stock as $card) {
