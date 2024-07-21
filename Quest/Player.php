@@ -8,7 +8,7 @@ class Player
 
     private $takedCards = [];
 
-    public function setName($name)
+    public function __construct($name)
     {
         $this->name = $name;
     }

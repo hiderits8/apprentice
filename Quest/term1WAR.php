@@ -7,12 +7,15 @@ require_once dirname(__FILE__) . '/Player.php';
 //開始
 echo '戦争を開始します。', PHP_EOL;
 
+echo 'プレイヤーの人数を入力してください（2〜5）: ';
+$numberOfPlayers = (int)trim(fgets(STDIN));
+
 //プレイヤーを決める。
-$player1 = new Player();
-$player1->setName('プレイヤー1');
-$player2 = new Player();
-$player2->setName('プレイヤー2');
-$players = [$player1, $player2];
+for ($i = 1; $i <= $numberOfPlayers; $i++) {
+    echo "プレイヤー{$i}の名前を入力してください: ";
+    $name = trim(fgets(STDIN));
+    $players[$i] = new Player($name);
+}
 
 //山札を作る
 $normalTrump = new NormalTrump();
