@@ -1,11 +1,8 @@
 <?php
 
 //カードインターフェイス
-abstract class Cards
+interface Cards
 {
     //カードをシャッフルする
-    public function shuffleCards()
-    {
-        shuffle($cards);
-    }
+    public function shuffleCards();
 }
