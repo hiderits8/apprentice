@@ -49,6 +49,14 @@ class Player
         return $this->takedCards;
     }
 
+    //獲得札を手札に入れる
+    public function mergeHands()
+    {
+        $cards = shuffle($this->takedCards);
+        $this->hands = $cards;
+        $this->takedCards = [];
+    }
+
     //手札を出す
     public function putHand()
     {
