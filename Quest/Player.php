@@ -8,11 +8,6 @@ class Player
 
     private $takedCards = [];
 
-    // public function __construct()
-    // {
-
-    // }
-
     public function setName($name)
     {
         $this->name = $name;
@@ -52,8 +47,8 @@ class Player
     //獲得札を手札に入れる
     public function mergeHands()
     {
-        $cards = shuffle($this->takedCards);
-        $this->hands = $cards;
+        shuffle($this->takedCards);
+        $this->hands = $this->takedCards;
         $this->takedCards = [];
     }
 

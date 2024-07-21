@@ -75,17 +75,21 @@ while (!$flg) {
         }
         echo $winner->getName(), 'の勝利です。', PHP_EOL;
         $winner->setTakedCards($stock);
+        if (!empty($hold)) {
+            $winner->setTakedCards($hold);
+            $hold = [];
+        }
         $stock = [];
     }
 
     foreach ($players as $player) {
-        if ($player->getHands() == true) {
+        if (is_array($player->getHands()) && empty($player->getHands())) {
             $player->mergeHands();
         }
     }
 
     foreach ($players as $player) {
-        if ($player->getHands() == true) {
+        if (is_array($player->getHands()) && empty($player->getHands())) {
             $flg = true;
         }
     }
@@ -93,12 +97,12 @@ while (!$flg) {
 
 $resultPlayers = [];
 foreach ($players as $player) {
-    if ($player->getHands() == true) {
+    if (is_array($player->getHands()) && empty($player->getHands())) {
         echo $player->getName(), 'の手札の枚数は0枚です。';
         $looser = ['name' => $player->getName(), 'number' => 0];
         continue;
     }
-    echo $player->getName(), 'の手札の枚数は', count($player->getHands()), '枚です。';
+    echo $player->getName(), 'の手札の枚数は', count($player->getHands()) + count($player->getTakedCards()), '枚です。';
     array_push($resultPlayers, ['name' => $player->getName(), 'number' => count($player->getHands())]);
 }
 
@@ -107,7 +111,8 @@ echo PHP_EOL;
 $resultPlayers = sortByKey('number', SORT_DESC, $resultPlayers);
 array_push($resultPlayers, $looser);
 for ($i = 0; $i < count($resultPlayers); $i++) {
-    echo $resultPlayers[$i][0], 'が', $i + 1, '位です。';
+    echo $resultPlayers[$i]['name'], 'が', $i + 1, '位です。';
 }
+
 
 echo PHP_EOL, '戦争を終了します。', PHP_EOL;
