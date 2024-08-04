@@ -43,6 +43,7 @@
 チャンネルID|channel_id|int|YES||||YES
 チャンネル名|channel_name|varchar(100)|||||
 
+
 ## 番組表
 テーブル名：schedule
 論理名|カラム名|データ型|PK|FK|NULL|INDEX|AUTO INCREMENT
