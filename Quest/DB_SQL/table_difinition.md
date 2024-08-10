@@ -32,7 +32,7 @@
 テーブル名：program_categories
 論理名|カラム名|データ型|PK|FK|NULL|INDEX|AUTO INCREMENT
 -|-|-|-|-|-|-|-
-番組ジャンルID|program_category_id|int|YES|||YES
+番組ジャンルID|program_category_id|int|YES||||YES
 ジャンルID|category_id|int||YES|||
 番組ID|program_id|int||YES|||
 
